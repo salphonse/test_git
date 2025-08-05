@@ -1,0 +1,21 @@
+name: Mon premier workflow de CI
+
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    # Le type de machine virtuelle qui va exécuter les tâches
+
+    steps:
+      # Etape 1: Cloner le dépôt
+      - uses: actions/checkout@v3
+
+      # Etape 2: Simuler une tâche de test
+      - name: Lancer les tests
+        run: |
+          echo "Lancement des tests..."
+          echo "Le code est prêt à être déployé."
+          
