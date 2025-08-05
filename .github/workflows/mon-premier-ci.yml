@@ -1,42 +1,61 @@
-name: Pipeline CI/CD pour site statique
+name: CI/CD pour GitHub Pages
 
-on:
+on: 
   push:
-    branches: ["master"]
-  pull_request:
-    branches: ["master"]
-
+    branches: ["main"]
+  
 jobs:
-    # Job 1: Build
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - name: Build the static site
-              run: 
-                echo "Le site statique est prêt à être testé." 
-                # Possible d'ajouter une étape de compilation pour un framwork front-end
+  build:
+    runs-on: ubuntu-latest 
+    steps:
+      - name: Checkout du code 
+        uses: actions/checkout@v3
 
-    # Job 2: Test
-    test:
-        runs-on: ubuntu-latest
-        needs: build # Ce job ne se lance que si le job 'build' a réussi
-        steps:
-            - uses: actions/checkout@v3
-            - name: Lancement des tests de validation
-              run: 
-                echo "Lancement des tests... Les tests ont réussi avec succès !"
+      - name: Construire le site
+        run: |
+          echo "Démarrage de la phase de construction..."
+          # Dans un vrai projet, ce serait une commande comme 'npm run build'
+          echo "Construction terminée !"
+          # Créer un dossier de sortie 'dist' pour le déploiement
+          mkdir dist
+          cp index.html dist/index.html
 
-    # Job 3: Déploiement
-    deploy:
-        runs-on: ubuntu-latest
-        needs: test # Ce job ne se lance que si le job 'test' a réussi
-        if: github.ref == 'refs/heads/master' 
-            # Déploiement uniquement depuis la branche 'master'
-        steps:
-            - uses: actions/checkout@v3
-            - name: Déploiement sur GitHub Pages
-              uses: peaceiris/actions-gh-pages@v3
-              with:
-                github_token: ${{ secrets.GITHUB_TOKEN }}
-                publish_dir: ./ # Le dossier à déployer
+      - name: Archive des artefacts 
+        uses: actions/upload-artifact@v3
+        with:
+          name: site-artefact 
+          path: dist
+  test:
+    runs-on: ubuntu-latest 
+    needs: build 
+    steps:
+      - name: Téléchargement des artefacts 
+        uses: actions/download-artifactav3
+        with:
+          name: site-artefact 
+          path: ./
+
+      - name: Lancer des tests
+        run: | 
+          echo "Démarrage des tests..."
+          if [-f "./index.html" ]; then 
+            echo "Test réussi : Le fichier index.html existe."
+          else 
+            echo "Test échoué : Le fichier index.html est manquant." 
+            exit 1
+          fi
+  deploy:
+    runs-on: ubuntu-latest 
+    needs: test 
+    permissions:
+      pages: write    # Autorisation de déployer sur les pages GitHub
+      id-token: write # Autorisation de se connecter avec le jeton par défaut
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Déploiement sur GitHub Pages
+        id: deployment 
+        uses: actions/deploy-pages@v4
+
