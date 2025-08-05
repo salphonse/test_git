@@ -13,8 +13,8 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - name: Build the static site
-                run: 
-                    echo "Le site statique est prêt à être testé."
+              run: 
+                echo "Le site statique est prêt à être testé." 
                 # Possible d'ajouter une étape de compilation pour un framwork front-end
 
     # Job 2: Test
@@ -24,8 +24,8 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - name: Lancement des tests de validation
-                run: 
-                    echo "Lancement des tests... Les tests ont réussi avec succès !"
+              run: 
+                echo "Lancement des tests... Les tests ont réussi avec succès !"
 
     # Job 3: Déploiement
     deploy:
@@ -36,7 +36,7 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - name: Déploiement sur GitHub Pages
-                uses: peaceiris/actions-gh-pages@v3
-                with:
-                    github_token: ${{ secrets.GITHUB_TOKEN }}
-                    publish_dir: ./ # Le dossier à déployer
+              uses: peaceiris/actions-gh-pages@v3
+              with:
+                github_token: ${{ secrets.GITHUB_TOKEN }}
+                publish_dir: ./ # Le dossier à déployer
