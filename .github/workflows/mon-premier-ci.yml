@@ -30,7 +30,7 @@ jobs:
     needs: build 
     steps:
       - name: Téléchargement des artefacts 
-        uses: actions/download-artifactav3
+        uses: actions/download-artifact@v3
         with:
           name: site-artefact 
           path: ./
