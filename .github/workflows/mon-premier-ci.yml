@@ -15,7 +15,7 @@ jobs:
         run: |
           echo "Démarrage de la phase de construction..."
           # Dans un vrai projet, ce serait une commande comme 'npm run build'
-          echo $(pwd)
+          echo $(ls)
           echo "Construction terminée !"
           # Créer un dossier de sortie 'dist' pour le déploiement
           mkdir dist
