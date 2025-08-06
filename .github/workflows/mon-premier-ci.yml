@@ -18,7 +18,7 @@ jobs:
           echo "Construction terminée !"
           # Créer un dossier de sortie 'dist' pour le déploiement
           mkdir dist
-          cp ../../index.html dist/index.html
+          cp ./index.html dist/index.html
 
       - name: Archive des artefacts 
         uses: actions/upload-artifact@v4
@@ -38,7 +38,7 @@ jobs:
       - name: Lancer des tests
         run: | 
           echo "Démarrage des tests..."
-          if [-f "./index.html" ]; then 
+          if [ -f "./index.html" ]; then 
             echo "Test réussi : Le fichier index.html existe."
           else 
             echo "Test échoué : Le fichier index.html est manquant." 
