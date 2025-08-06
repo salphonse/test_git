@@ -18,7 +18,7 @@ jobs:
           echo "Construction terminée !"
           # Créer un dossier de sortie 'dist' pour le déploiement
           mkdir dist
-          cp index.html dist/index.html
+          cp ./index.html dist/index.html
 
       - name: Archive des artefacts 
         uses: actions/upload-artifact@v4
